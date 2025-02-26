@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formularz rozliczeniowy</title>
+</head>
+<body>
+    <h2>Formularz do rozliczenia podatkowego</h2>
+    <form id="tax-form">
+        <label>Imiona i nazwisko:</label>
+        <input type="text" name="full_name" required><br>
+
+        <label>Data urodzenia:</label>
+        <input type="date" name="birth_date" required><br>
+
+        <label>BSN (Burgerservicenummer):</label>
+        <input type="text" name="bsn" required><br>
+
+        <label>Adres zamieszkania:</label>
+        <input type="text" name="address" required><br>
+
+        <label>Stan cywilny:</label>
+        <select name="marital_status">
+            <option value="single">Singiel</option>
+            <option value="married">Żonaty/Zamężna</option>
+        </select><br>
+
+        <label>Numer konta bankowego (IBAN):</label>
+        <input type="text" name="iban" required><br>
+
+        <label>Czy IBAN był podawany do Belastingdienst?</label>
+        <select name="iban_registered">
+            <option value="yes">Tak</option>
+            <option value="no">Nie</option>
+        </select><br>
+
+        <button type="submit">Wyślij</button>
+    </form>
+
+    <script src="script.js"></script>
+</body>
+</html>
