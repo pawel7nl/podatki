@@ -25,17 +25,33 @@
 
             <label>Adres zamieszkania:</label>
             <input type="text" name="address" required><br>
-
+            
             <button type="button" onclick="nextStep()">Dalej</button>
         </div>
 
         <div class="step">
             <label>Stan cywilny:</label>
-            <select name="marital_status">
+            <select name="marital_status" onchange="togglePartnerFields(this.value)">
                 <option value="single">Singiel</option>
                 <option value="married">Żonaty/Zamężna</option>
             </select><br>
+            
+            <div id="partner-info" style="display: none;">
+                <label>Imię i nazwisko partnera:</label>
+                <input type="text" name="partner_name"><br>
 
+                <label>Data urodzenia partnera:</label>
+                <input type="date" name="partner_birth_date"><br>
+
+                <label>BSN partnera:</label>
+                <input type="text" name="partner_bsn"><br>
+            </div>
+
+            <button type="button" onclick="prevStep()">Wstecz</button>
+            <button type="button" onclick="nextStep()">Dalej</button>
+        </div>
+
+        <div class="step">
             <label>Numer konta bankowego (IBAN):</label>
             <input type="text" name="iban" required><br>
 
@@ -54,14 +70,30 @@
             <select name="income_source">
                 <option value="employment">Umowa o pracę</option>
                 <option value="zzp">Działalność ZZP</option>
+                <option value="foreign_income">Dochody z zagranicy</option>
                 <option value="investments">Inwestycje</option>
             </select><br>
+
+            <button type="button" onclick="prevStep()">Wstecz</button>
+            <button type="button" onclick="nextStep()">Dalej</button>
+        </div>
+
+        <div class="step">
+            <label>Koszty do odliczenia:</label><br>
+            <input type="checkbox" name="home_costs" value="yes"> Koszty związane z domem<br>
+            <input type="checkbox" name="medical_costs" value="yes"> Koszty leczenia<br>
+            <input type="checkbox" name="donations" value="yes"> Darowizny na cele charytatywne<br>
 
             <button type="button" onclick="prevStep()">Wstecz</button>
             <button type="submit">Wyślij</button>
         </div>
     </form>
 
+    <script>
+        function togglePartnerFields(value) {
+            document.getElementById('partner-info').style.display = (value === 'married') ? 'block' : 'none';
+        }
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
