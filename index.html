@@ -2,98 +2,172 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formularz do rozliczenia podatkowego</title>
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rozbudowany formularz</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .step { display: none; }
-        .active { display: block; }
+        body {
+            background: linear-gradient(to right, #74ebd5, #acb6e5);
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 50px;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
-    <h2>Formularz do rozliczenia podatkowego</h2>
-    <form id="tax-form">
-        <div class="step active">
-            <label>Imiona i nazwisko:</label>
-            <input type="text" name="full_name" required><br>
-
-            <label>Data urodzenia:</label>
-            <input type="date" name="birth_date" required><br>
-
-            <label>BSN (Burgerservicenummer):</label>
-            <input type="text" name="bsn" required><br>
-
-            <label>Adres zamieszkania:</label>
-            <input type="text" name="address" required><br>
+    <div class="container">
+        <h2 class="text-center text-primary">Formularz rejestracyjny</h2>
+        <form id="contactForm">
+            <!-- Imię i nazwisko -->
+            <div class="mb-3">
+                <label for="name" class="form-label">Imię i nazwisko</label>
+                <input type="text" class="form-control" id="name" placeholder="Podaj swoje imię" required>
+                <div class="error" id="nameError"></div>
+            </div>
             
-            <button type="button" onclick="nextStep()">Dalej</button>
-        </div>
-
-        <div class="step">
-            <label>Stan cywilny:</label>
-            <select name="marital_status" onchange="togglePartnerFields(this.value)">
-                <option value="single">Singiel</option>
-                <option value="married">Żonaty/Zamężna</option>
-            </select><br>
-            
-            <div id="partner-info" style="display: none;">
-                <label>Imię i nazwisko partnera:</label>
-                <input type="text" name="partner_name"><br>
-
-                <label>Data urodzenia partnera:</label>
-                <input type="date" name="partner_birth_date"><br>
-
-                <label>BSN partnera:</label>
-                <input type="text" name="partner_bsn"><br>
+            <!-- E-mail -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Adres e-mail</label>
+                <input type="email" class="form-control" id="email" placeholder="Twój e-mail" required>
+                <div class="error" id="emailError"></div>
             </div>
 
-            <button type="button" onclick="prevStep()">Wstecz</button>
-            <button type="button" onclick="nextStep()">Dalej</button>
-        </div>
+            <!-- Numer telefonu -->
+            <div class="mb-3">
+                <label for="phone" class="form-label">Numer telefonu</label>
+                <input type="tel" class="form-control" id="phone" placeholder="123-456-789" required>
+                <div class="error" id="phoneError"></div>
+            </div>
 
-        <div class="step">
-            <label>Numer konta bankowego (IBAN):</label>
-            <input type="text" name="iban" required><br>
+            <!-- Wybór płci -->
+            <div class="mb-3">
+                <label class="form-label">Płeć</label><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="gender" id="male" value="Mężczyzna">
+                    <label class="form-check-label" for="male">Mężczyzna</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="gender" id="female" value="Kobieta">
+                    <label class="form-check-label" for="female">Kobieta</label>
+                </div>
+                <div class="error" id="genderError"></div>
+            </div>
 
-            <label>Czy IBAN był podawany do Belastingdienst?</label>
-            <select name="iban_registered">
-                <option value="yes">Tak</option>
-                <option value="no">Nie</option>
-            </select><br>
+            <!-- Wybór kraju -->
+            <div class="mb-3">
+                <label for="country" class="form-label">Wybierz kraj</label>
+                <select class="form-select" id="country">
+                    <option value="">-- Wybierz kraj --</option>
+                    <option value="Polska">Polska</option>
+                    <option value="Holandia">Holandia</option>
+                    <option value="Niemcy">Niemcy</option>
+                    <option value="Francja">Francja</option>
+                </select>
+                <div class="error" id="countryError"></div>
+            </div>
 
-            <button type="button" onclick="prevStep()">Wstecz</button>
-            <button type="button" onclick="nextStep()">Dalej</button>
-        </div>
+            <!-- Wiadomość -->
+            <div class="mb-3">
+                <label for="message" class="form-label">Wiadomość</label>
+                <textarea class="form-control" id="message" rows="4" placeholder="Twoja wiadomość" required></textarea>
+                <div class="error" id="messageError"></div>
+            </div>
 
-        <div class="step">
-            <label>Źródło dochodu:</label>
-            <select name="income_source">
-                <option value="employment">Umowa o pracę</option>
-                <option value="zzp">Działalność ZZP</option>
-                <option value="foreign_income">Dochody z zagranicy</option>
-                <option value="investments">Inwestycje</option>
-            </select><br>
+            <!-- Checkbox zgody -->
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="agreement" required>
+                <label class="form-check-label" for="agreement">Akceptuję regulamin</label>
+                <div class="error" id="agreementError"></div>
+            </div>
 
-            <button type="button" onclick="prevStep()">Wstecz</button>
-            <button type="button" onclick="nextStep()">Dalej</button>
-        </div>
+            <!-- Przycisk wysyłania -->
+            <button type="submit" class="btn btn-primary w-100">Wyślij</button>
+        </form>
+    </div>
 
-        <div class="step">
-            <label>Koszty do odliczenia:</label><br>
-            <input type="checkbox" name="home_costs" value="yes"> Koszty związane z domem<br>
-            <input type="checkbox" name="medical_costs" value="yes"> Koszty leczenia<br>
-            <input type="checkbox" name="donations" value="yes"> Darowizny na cele charytatywne<br>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-            <button type="button" onclick="prevStep()">Wstecz</button>
-            <button type="submit">Wyślij</button>
-        </div>
-    </form>
-
+    <!-- JavaScript do walidacji -->
     <script>
-        function togglePartnerFields(value) {
-            document.getElementById('partner-info').style.display = (value === 'married') ? 'block' : 'none';
-        }
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Zatrzymuje domyślną akcję formularza
+
+            let valid = true;
+
+            // Pobieranie wartości pól
+            let name = document.getElementById("name").value.trim();
+            let email = document.getElementById("email").value.trim();
+            let phone = document.getElementById("phone").value.trim();
+            let gender = document.querySelector('input[name="gender"]:checked');
+            let country = document.getElementById("country").value;
+            let message = document.getElementById("message").value.trim();
+            let agreement = document.getElementById("agreement").checked;
+
+            // Czyszczenie błędów
+            document.querySelectorAll(".error").forEach(el => el.innerText = "");
+
+            // Walidacja imienia
+            if (name.length < 3) {
+                document.getElementById("nameError").innerText = "Podaj pełne imię.";
+                valid = false;
+            }
+
+            // Walidacja e-maila
+            if (!email.match(/^\S+@\S+\.\S+$/)) {
+                document.getElementById("emailError").innerText = "Podaj poprawny adres e-mail.";
+                valid = false;
+            }
+
+            // Walidacja telefonu
+            if (!phone.match(/^\d{3}-\d{3}-\d{3}$/)) {
+                document.getElementById("phoneError").innerText = "Podaj numer w formacie 123-456-789.";
+                valid = false;
+            }
+
+            // Walidacja płci
+            if (!gender) {
+                document.getElementById("genderError").innerText = "Wybierz płeć.";
+                valid = false;
+            }
+
+            // Walidacja kraju
+            if (country === "") {
+                document.getElementById("countryError").innerText = "Wybierz kraj.";
+                valid = false;
+            }
+
+            // Walidacja wiadomości
+            if (message.length < 10) {
+                document.getElementById("messageError").innerText = "Wiadomość musi mieć min. 10 znaków.";
+                valid = false;
+            }
+
+            // Sprawdzenie checkboxa
+            if (!agreement) {
+                document.getElementById("agreementError").innerText = "Musisz zaakceptować regulamin.";
+                valid = false;
+            }
+
+            // Wysyłanie e-mailem
+            if (valid) {
+                let subject = encodeURIComponent("Nowa wiadomość");
+                let body = encodeURIComponent(`Imię: ${name}\nE-mail: ${email}\nTelefon: ${phone}\nPłeć: ${gender.value}\nKraj: ${country}\nWiadomość: ${message}`);
+
+                window.location.href = `mailto:twojemail@example.com?subject=${subject}&body=${body}`;
+            }
+        });
     </script>
-    <script src="script.js"></script>
 </body>
 </html>
